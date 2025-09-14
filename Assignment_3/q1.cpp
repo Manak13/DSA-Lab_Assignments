@@ -1,113 +1,100 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-int stack[100];
-int s = 0;
-int top = -1;
+class Stack {
+    vector<int> v;   // dynamic array
 
-void peek() {
-    if (top == -1) {
-        cout << "Stack is empty" << endl;
-    } else {
-        cout << "Top element is: " << stack[top] << endl;
+public:
+    // (i) push
+    void push(int value) {
+        v.push_back(value);
+        cout << value << " pushed into stack." << endl;
     }
-}
 
-void display() {
-    if (top == -1) {
-        cout << "Stack is empty" << endl;
-    } else {
-        cout << "Stack elements:" << endl;
-        for (int i = top; i >= 0; i--) {
-            cout << stack[i] << endl;
+    // (ii) pop
+    void pop() {
+        if (isEmpty()) {
+            cout << "Stack Underflow!" << endl;
+            return;
+        }
+        cout << v.back() << " popped from stack." << endl;
+        v.pop_back();
+    }
+
+    // (iii) isEmpty
+    bool isEmpty() {
+        return v.empty();
+    }
+
+    // (iv) isFull (vector theoretically kabhi full nahi hota, except memory limit)
+    bool isFull() {
+        return false;  // vector dynamically grow hota hai
+    }
+
+    // (v) display
+    void display() {
+        if (isEmpty()) {
+            cout << "Stack is empty." << endl;
+            return;
+        }
+        cout << "Stack elements: ";
+        for (int i = v.size() - 1; i >= 0; i--) {
+            cout << v[i] << " ";
+        }
+        cout << endl;
+    }
+
+    // (vi) peek
+    void peek() {
+        if (isEmpty()) {
+            cout << "Stack is empty." << endl;
+        } else {
+            cout << "Top element is: " << v.back() << endl;
         }
     }
-}
+};
 
-int pop() {
-    if (top == -1) {
-        cout << "Stack Underflow Error" << endl;
-        return -1;  // error value
-    } else {
-        int val = stack[top];
-        top--;
-        return val;
-    }
-}
-
-int isEmpty() {
-    return (top == -1) ? 1 : 0;
-}
-
-int push(int n) {
-    if (top == s - 1) {
-        cout << "Stack Overflow" << endl;
-        return 1;
-    } else {
-        top++;
-        stack[top] = n;
-        return 0;
-    }
-}
-
+// ---------------------- Menu Driven Program ----------------------
 int main() {
-    cout << "Enter size of stack: ";
-    cin >> s;
+    Stack s;
+    int choice, value;
 
-    int ex = 0;
-    while (ex == 0) {
-        cout << "\n1.push()" << endl;
-        cout << "2.pop()" << endl;
-        cout << "3.isEmpty()" << endl;
-        cout << "4.display()" << endl;
-        cout << "5.peek()" << endl;
-        cout << "6.exit" << endl;
+    do {
+        cout << "\n--- Stack Menu ---\n";
+        cout << "1. Push\n2. Pop\n3. isEmpty\n4. isFull\n5. Display\n6. Peek\n0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-        int ch = 0;
-        cin >> ch;
-
-        switch (ch) {
-            case 1: {
-                int n = 0;
-                cout << "Enter an element to be pushed: ";
-                cin >> n;
-                int log = push(n);
-                if (log == 1) {
-                    // stack overflow, no exit needed; just continue
-                }
-                break;
-            }
-            case 2: {
-                int i = pop();
-                if (i != -1) {
-                    cout << "Popped element: " << i << endl;
-                }
-                break;
-            }
-            case 3: {
-                if (isEmpty()) {
-                    cout << "Stack is empty" << endl;
-                } else {
-                    cout << "Stack is not empty" << endl;
-                }
-                break;
-            }
-            case 4: {
-                display();
-                break;
-            }
-            case 5: {
-                peek();
-                break;
-            }
-            case 6: {
-                ex = 1;
-                break;
-            }
-            default:
-                cout << "Invalid choice! Try again." << endl;
+        switch (choice) {
+        case 1:
+            cout << "Enter value to push: ";
+            cin >> value;
+            s.push(value);
+            break;
+        case 2:
+            s.pop();
+            break;
+        case 3:
+            cout << (s.isEmpty() ? "Stack is Empty." : "Stack is not Empty.") << endl;
+            break;
+            
+        case 4:
+            cout << (s.isFull() ? "Stack is Full." : "Stack is not Full.") << endl;
+            break;
+        case 5:
+            s.display();
+            break;
+        case 6:
+            s.peek();
+            break;
+        case 0:
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice!" << endl;
         }
-    }
+    } while (choice != 0);
 
     return 0;
 }
