@@ -1,51 +1,45 @@
-
 #include <iostream>
+#include <stack>
 using namespace std;
 
-int Balanced(const string &s)
-{
-    int n = s.length();
-    char stack[n];
-    int top = -1;
+bool isBalanced(string exp) {
+    stack<char> s;
 
-    for (int i = 0; i < n; i++)
-    {
-        char c = s[i];
-        if (c == '{' || c == '[' || c == '(')//pushing
-        {
-            top++;
-            stack[top] = c;//push()
+    for (char ch : exp) {
+        
+        if (ch == '(' || ch == '{' || ch == '[') {
+            s.push(ch);
         }
-        else if (c == '}' || c == ']' || c == ')')//popping
-        {
-            if (top == -1)
-                return 0;
-            char topChar = stack[top];
-            if ((c == '}' && topChar != '{') || (c == ']' && topChar != '[') || (c == ')' && topChar != '('))
-            {
-                return 0;
+        else if (ch == ')' || ch == '}' || ch == ']') {
+            if (s.empty()) return false; 
+
+            char top = s.top();
+            s.pop();
+
+            
+            if ((ch == ')' && top != '(') ||
+                (ch == '}' && top != '{') ||
+                (ch == ']' && top != '[')) {
+                return false;
             }
-            top--;//pop()
         }
     }
-    return (top == -1);
+
+
+    return s.empty();
 }
 
-int main()
-{
-    string s;
+int main() {
+    string exp;
     cout << "Enter expression: ";
-    cin >> s;
+    cin >> exp;
 
-    if (Balanced(s))
-    {
-        cout << "balanced" << endl;
-    }
+    if (isBalanced(exp))
+        cout << "Balanced\n";
     else
-    {
-        cout << "Not balanced" << endl;
-    }
+        cout << "Not Balanced\n";
 
     return 0;
 }
+
 
