@@ -1,30 +1,36 @@
 #include <iostream>
 using namespace std;
 
-int main(){
-    
-    // Initialization of an array
+int main() {
     int n;
-    cout << "\nEnter the number of elements in the array: ";
+    cout << "Enter size of array: ";
     cin >> n;
 
-    int arr[n];
-    cout << "\nEnter the elements of the array:\n";
-    for(int i=0; i<n; i++){
+    int arr[100];
+    cout << "Enter array elements: ";
+    for (int i = 0; i < n; i++) {
         cin >> arr[i];
     }
 
-    // Checking total number of duplicated elements
-    int check = 0;
-    for(int i=0; i<n; i++){
-        for (int j = i+1; j < n; j++){
-            if(arr[i]==arr[j]) {
-                check++;
+    int count = 0;
+
+    for (int i = 0; i < n; i++) {
+        bool isDuplicate = false;
+
+        for (int j = 0; j < i; j++) {
+            if (arr[i] == arr[j]) {
+                isDuplicate = true;
                 break;
             }
         }
+
+        if (!isDuplicate) {
+            count++;
+        }
     }
 
-    cout << "\nTotal unique elements in the array are: " << n-check << endl;
+    cout << "Total distinct elements: " << count << endl;
+
     return 0;
 }
+   
