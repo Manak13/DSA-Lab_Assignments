@@ -1,77 +1,62 @@
 #include <iostream>
+#include <stack>
 using namespace std;
 
-bool isOperand(char c) {
-    return ( (c >= 'a' && c <= 'z') ||
-             (c >= 'A' && c <= 'Z') ||
-             (c >= '0' && c <= '9') );
+
+int prec(char c) {
+    if(c=='+' || c=='-') return 1;
+    if(c=='*' || c=='/') return 2;
+    if(c=='^') return 3;
+    return -1;
 }
 
-int precedence(char op) {
-    if(op == '+' || op == '-') return 1;
-    if(op == '*' || op == '/') return 2;
-    if(op == '^') return 3;
-    return 0;
-}
-
-void infixToPostfix(const string &s) {
-    int n = s.length();
-    char stack[n];  
-    int top = -1;
+string infixToPostfix(string infix) {
+    stack<char> s;
     string post = "";
 
-    for (int i = 0; i < n; i++) {
-        char c = s[i];
+    for(int i=0; i<infix.length(); i++) {
+        char ch = infix[i];
 
-        if (c == ' ') {
-            
-            continue;
+        
+        if(isalnum(ch)) {
+            post += ch;
         }
-        else if (isOperand(c)) {
-            post += c;
+        
+        else if(ch == '(') {
+            s.push(ch);
         }
-        else if (c == '(') {
-            stack[++top] = c;
-        }
-        else if (c == ')') {
-            
-            while (top >= 0 && stack[top] != '(') {
-                post += stack[top--];
+    
+        else if(ch == ')') {
+            while(!s.empty() && s.top()!='(') {
+                post += s.top();
+                s.pop();
             }
-            if (top >= 0 && stack[top] == '(')
-                top--; 
-            else {
-                cout << "Error: Mismatched parentheses\n";
-                return;
-            }
+            s.pop(); // remove '('
         }
+        
         else {
-            
-            while (top >= 0 && precedence(stack[top]) >= precedence(c) && stack[top] != '(') {
-                post += stack[top--];
+            while(!s.empty() && prec(s.top()) >= prec(ch)) {
+                post += s.top();
+                s.pop();
             }
-            stack[++top] = c;
+            s.push(ch);
         }
     }
 
     
-    while (top >= 0) {
-        if (stack[top] == '(') {
-            cout << "Error: Mismatched parentheses\n";
-            return;
-        }
-        post += stack[top--];
+    while(!s.empty()) {
+        post += s.top();
+        s.pop();
     }
 
-    cout << "Postfix expression: " << post << endl;
+    return post;
 }
 
 int main() {
-    string s;
-    cout << "Enter expression: ";
-    getline(cin, s);
+    string infix;
+    cout << "Enter Infix: ";
+    cin >> infix;
 
-    infixToPostfix(s);
-
+    cout << "Postfix: " << infixToPostfix(infix);
     return 0;
 }
