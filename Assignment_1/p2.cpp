@@ -8,13 +8,12 @@ int main(){
     cin >> n;
     int arr[n];
 
-    // Initialising the array
+    
     cout << "\nEnter the elements in the array: \n";
     for(int i=0; i<n; i++){
         cin >> arr[i];
     }
 
-    // arr[5] = {1,2,3,3,4};
     for(int i=0; i<n; i++){
         int check = arr[i];
         for(int j=i+1; j<n;){
@@ -26,9 +25,7 @@ int main(){
             }
             else j++;
         }
-    }
-
-    // Printing the new array:
+    
     for(int i=0; i<n; i++){
         cout << arr[i] << " ";
     }
