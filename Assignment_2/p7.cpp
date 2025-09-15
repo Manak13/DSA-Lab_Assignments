@@ -3,7 +3,7 @@ using namespace std;
 
 int main(){
     
-    // Initialization of an array
+    
     int n;
     cout << "\nEnter the number of elements in the array: ";
     cin >> n;
@@ -14,7 +14,7 @@ int main(){
         cin >> arr[i];
     }
 
-    // Checking number of inversions
+    
     int check = 0;
     for (int i = 0; i < n-1; i++){
         for (int j = i+1; j < n; j++){
